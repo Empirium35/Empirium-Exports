@@ -1,2 +1,100 @@
 # Google App Engine generated folder
 appengine-generated/
+function ContactFormScreen() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = () => {
+    // Here you'll handle sending the message, 
+    // possibly to your email or a backend service.
+    console.log('Name:', name);
+    console.log('Email:', email);
+    console.log('Message:', message);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        onChangeText={setName}
+        value={name}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        onChangeText={setEmail}
+        value={email}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Message"
+        onChangeText={setMessage}
+        value={message}
+        multiline
+      />
+      <Button title="Submit" onPress={handleSubmit} />
+    </View>
+  );
+}
+const renderProductItem = ({ item }) => {
+  // ... (other states and functions) ...
+
+  if (selectedCategory === 'animals') {
+    return (
+      <TouchableOpacity style={styles.productItem}>
+        {/* ... (image, name, price) ... */}
+        <Button 
+          title="Contact Us" 
+          onPress={() => navigation.navigate('ContactForm')} 
+        />
+      </TouchableOpacity>
+    );
+  } else {
+    // ... (existing code for soaps) ...
+  }
+};
+<NavigationContainer>
+  <Stack.Navigator>
+    {/* ... other screens ... */}
+    <Stack.Screen name="ContactForm" component={ContactFormScreen} />
+  </Stack.Navigator>
+</NavigationContainer>
+function OrderSummaryScreen() {
+  const [cartItems, setCartItems] = useState([]); // This will hold the selected items
+
+  // You'll need to pass the selected items to this screen 
+  // using React Navigation's `navigate` function.
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    cartItems.forEach(item => {
+      totalPrice += item.price * item.quantity;
+      if (item.giftWrap) {
+        totalPrice += 5; // Add gift wrap cost
+      }
+    });
+    return totalPrice;
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Order Summary</Text>
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.orderItem}>
+            <Text>{item.name} x {item.quantity}</Text>
+            {item.scent && <Text>Scent: {item.scent}</Text>}
+            {item.giftWrap && <Text>Gift Wrap: Yes</Text>}
+            <Text>Price: ${item.price * item.quantity + (item.giftWrap ? 5 : 0)}</Text>
+          </View>
+        )}
+      />
+      <Text style={styles.totalPrice}>Total: ${calculateTotalPrice()}</Text>
+      <Button title="Proceed to Checkout" onPress={() => { /* Handle checkout */ }} />
+    </View>
+  );
+}
